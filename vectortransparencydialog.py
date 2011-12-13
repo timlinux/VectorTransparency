@@ -44,7 +44,7 @@ class VectorTransparencyDialog(QtGui.QDialog):
             myLayer = self.iface.mapCanvas().layer(i)
             if myLayer.type() == myLayer.VectorLayer:
                 #if myLayer.geometryType() == QGis.Polygon:
-                self.ui.comboBox.insertItem(0,myLayer.name())
+                self.ui.comboBox.addItem(myLayer.name(),myLayer.id())
         return myLayers
     
     def accept(self):
@@ -53,8 +53,8 @@ class VectorTransparencyDialog(QtGui.QDialog):
         if not len(self.iface.mapCanvas().layers()):
             self.close()
             return
+        myLayer = QgsMapLayerRegistry.instance().mapLayer(self.ui.comboBox.itemData(self.ui.comboBox.currentIndex()).toString())
         myAlpha = float(self.ui.spinBox.value())  / 100.0
-        myLayer = self.iface.mapCanvas().layer((self.ui.comboBox.currentIndex()))
         if myLayer.isUsingRendererV2():
             # new symbology - subclass of QgsFeatureRendererV2 class
             myRenderer = myLayer.rendererV2()
@@ -78,5 +78,10 @@ class VectorTransparencyDialog(QtGui.QDialog):
         else:
             # old symbology - subclass of QgsRenderer class
             myRenderer = myLayer.renderer()
+        if hasattr(myLayer, "setCacheImage"): 
+            myLayer.setCacheImage(None)
+        myLayer.triggerRepaint()
+        self.iface.mapCanvas().setDirty(True)
+        self.iface.mapCanvas().refresh()
         self.close()
             
