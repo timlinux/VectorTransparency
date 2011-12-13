@@ -40,10 +40,39 @@ class VectorTransparencyDialog(QtGui.QDialog):
 
 
     def getLayers(self):
-        layers = []
+        myLayers = []
         for i in range(len(self.iface.mapCanvas().layers())):
-            layer = self.iface.mapCanvas().layer(i)
-            if layer.type() == layer.VectorLayer:
-                #if layer.geometryType() == QGis.Polygon:
-                self.ui.comboBox.insertItem(0,layer.name())
-        return layers
+            myLayer = self.iface.mapCanvas().layer(i)
+            if myLayer.type() == myLayer.VectorLayer:
+                #if myLayer.geometryType() == QGis.Polygon:
+                self.ui.comboBox.insertItem(0,myLayer.name())
+        return myLayers
+    
+    def accept(self):
+        myAlpha = self.ui.spinBox.value()
+        myLayer = self.iface.mapCanvas().layer((self.ui.comboBox.currentIndex()))
+        if myLayer.isUsingRendererV2():
+            # new symbology - subclass of QgsFeatureRendererV2 class
+            myRenderer = myLayer.rendererV2()
+            myType = myRenderer.type()
+            if myType == "singleSymbol":
+                mySymbol = myRenderer.symbol()
+                mySymbol.setAlpha(myAlpha)
+            elif myType == "categorizedSymbol":
+                for myCategory in myRenderer.categories():
+                    mySymbol = myCategory.symbol()
+                    mySymbol.setAlpha(myAlpha)
+            elif myType == "graduatedSymbol":
+                for myRange in myRenderer.ranges():
+                    mySymbol = myRange.symbol()
+                    mySymbol.setAlpha(myAlpha)
+            else:
+                #type unknown
+                pass
+            
+                
+        else:
+            # old symbology - subclass of QgsRenderer class
+            myRenderer = myLayer.renderer()
+        self.close()
+            
