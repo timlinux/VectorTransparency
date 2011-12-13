@@ -63,13 +63,19 @@ class VectorTransparencyDialog(QtGui.QDialog):
                 mySymbol = myRenderer.symbol()
                 mySymbol.setAlpha(myAlpha)
             elif myType == "categorizedSymbol":
+                myIndex = 0
                 for myCategory in myRenderer.categories():
-                    mySymbol = myCategory.symbol()
+                    mySymbol = myCategory.symbol().clone()
                     mySymbol.setAlpha(myAlpha)
+                    myRenderer.updateCategorySymbol(myIndex, mySymbol)
+                    myIndex += 1                
             elif myType == "graduatedSymbol":
+                myIndex = 0
                 for myRange in myRenderer.ranges():
-                    mySymbol = myRange.symbol()
+                    mySymbol = myRange.symbol().clone()
                     mySymbol.setAlpha(myAlpha)
+                    myRenderer.updateRangeSymbol(myIndex, mySymbol)
+                    myIndex += 1 
             else:
                 #type unknown
                 pass
