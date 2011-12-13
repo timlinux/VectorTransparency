@@ -23,15 +23,14 @@ from PyQt4 import QtCore, QtGui
 from qgis.core import *
 from qgis.gui import *
 from ui_vectortransparency import Ui_VectorTransparency
+import sys 
+sys.path.append("/home/timlinux/.eclipse/org.eclipse.platform_3.7.0_155965261/plugins/org.python.pydev.debug_2.2.4.2011110216/pysrc/")
+from pydevd import *
 # create the dialog for zoom to point
 class VectorTransparencyDialog(QtGui.QDialog):
     def __init__(self, iface):
         # Save reference to the QGIS interface
         self.iface = iface
-        import sys 
-        sys.path.append("/home/timlinux/.eclipse/org.eclipse.platform_3.7.0_155965261/plugins/org.python.pydev.debug_2.2.4.2011110216/pysrc/")
-        from pydevd import *
-        settrace()
         QtGui.QDialog.__init__(self)
         # Set up the user interface from Designer.
         self.ui = Ui_VectorTransparency()
@@ -49,7 +48,12 @@ class VectorTransparencyDialog(QtGui.QDialog):
         return myLayers
     
     def accept(self):
-        myAlpha = self.ui.spinBox.value()
+        
+        settrace()
+        if not len(self.iface.mapCanvas().layers()):
+            self.close()
+            return
+        myAlpha = float(self.ui.spinBox.value())  / 100.0
         myLayer = self.iface.mapCanvas().layer((self.ui.comboBox.currentIndex()))
         if myLayer.isUsingRendererV2():
             # new symbology - subclass of QgsFeatureRendererV2 class
