@@ -17,7 +17,6 @@ cat metadata.txt | \
 mv ${TMP} metadata.txt
 
 #update the __init__ version
-set -x
 TMP=__init__.py$$
 cat __init__.py | \
   sed "s/[Vv]ersion [0-9]\.[0-9]/Version ${VERSION}/g" \
