@@ -8,7 +8,7 @@
 [general]
 name=Vector Transparency Manager
 description=Update transparency of vector symbols in batch mode
-version=0.2
+version=
 qgisMinimumVersion=1.7
 class_name=VectorTransparency
 website=http://linfiniti.com

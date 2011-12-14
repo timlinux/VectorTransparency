@@ -1,0 +1,5 @@
+Version 2.0 - 14 December 2011
+
+- Added flag to disable debug mode
+- Added release script to package plugin automatically
+- Don't list old symbology layers
