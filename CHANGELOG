@@ -1,3 +1,6 @@
+Version 0.3 - 14 December 2011
+
+- Include resource and ui generated files in git so they get packaged
 Version 0.2 - 14 December 2011
 
 - Added flag to disable debug mode
