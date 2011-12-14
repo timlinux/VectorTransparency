@@ -12,14 +12,15 @@ VERSION=$1
 #update the metadata file version
 TMP=metdata.txt$$
 cat metadata.txt | \
-  sed "s/version=[0-9]\.[0-9]/version=${VERSION}/g" \
+  sed "s/[Vv]ersion=[0-9]\.[0-9]/version=${VERSION}/g" \
   > ${TMP}
 mv ${TMP} metadata.txt
 
 #update the __init__ version
+set -x
 TMP=__init__.py$$
 cat __init__.py | \
-  sed "s/Version [0-9]\.[0-9]/Version ${VERSION}/g" \
+  sed "s/[Vv]ersion [0-9]\.[0-9]/Version ${VERSION}/g" \
   > ${TMP} 
 mv ${TMP} __init__.py
 
