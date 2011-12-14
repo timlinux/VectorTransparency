@@ -28,9 +28,13 @@ mv ${TMP} __init__.py
 rm *.pyc
 rm *.*~
 
+echo "You need to commit the version number change before we can package"
+git commit -m "Updated version number to ${VERSION}" -a
+
 DIR=`pwd | cut -d "/" -f 7`
 OUT="/tmp/${DIR}.${1}.zip"
 git archive --prefix=${DIR}/ --format zip --output ${OUT} master
+
 
 echo "Your plugin archive has been generated as"
 echo "${OUT}"
