@@ -1,4 +1,4 @@
 *.pyc
-resources.py
-ui_vectortransparency.py
+#resources.py
+#ui_vectortransparency.py
 *.*~
