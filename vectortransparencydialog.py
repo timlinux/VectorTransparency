@@ -23,9 +23,11 @@ from PyQt4 import QtCore, QtGui
 from qgis.core import *
 from qgis.gui import *
 from ui_vectortransparency import Ui_VectorTransparency
-import sys 
-sys.path.append("/home/timlinux/.eclipse/org.eclipse.platform_3.7.0_155965261/plugins/org.python.pydev.debug_2.2.4.2011110216/pysrc/")
-from pydevd import *
+DEBUG=False
+if DEBUG:
+    import sys 
+    sys.path.append("/home/timlinux/.eclipse/org.eclipse.platform_3.7.0_155965261/plugins/org.python.pydev.debug_2.2.4.2011110216/pysrc/")
+    from pydevd import *
 # create the dialog for zoom to point
 class VectorTransparencyDialog(QtGui.QDialog):
     def __init__(self, iface):
@@ -42,14 +44,14 @@ class VectorTransparencyDialog(QtGui.QDialog):
         myLayers = []
         for i in range(len(self.iface.mapCanvas().layers())):
             myLayer = self.iface.mapCanvas().layer(i)
-            if myLayer.type() == myLayer.VectorLayer:
+            if myLayer.type() == myLayer.VectorLayer and myLayer.isUsingRendererV2():
                 #if myLayer.geometryType() == QGis.Polygon:
                 self.ui.comboBox.addItem(myLayer.name(),myLayer.id())
         return myLayers
     
     def accept(self):
-        
-        settrace()
+        if DEBUG:        
+            settrace()
         if not len(self.iface.mapCanvas().layers()):
             self.close()
             return
@@ -78,11 +80,10 @@ class VectorTransparencyDialog(QtGui.QDialog):
                     myIndex += 1 
             else:
                 #type unknown
-                pass
-            
-                
+                pass    
         else:
             # old symbology - subclass of QgsRenderer class
+            # Note old symbology not supported yet
             myRenderer = myLayer.renderer()
         if hasattr(myLayer, "setCacheImage"): 
             myLayer.setCacheImage(None)

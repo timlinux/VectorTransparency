@@ -24,7 +24,7 @@ def name():
 def description():
     return "Update transparency of vector symbols in batch mode"
 def version():
-    return "Version 0.1"
+    return "Version 0.2"
 def icon():
     return "icon.png"
 def qgisMinimumVersion():
