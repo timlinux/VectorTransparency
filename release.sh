@@ -29,7 +29,7 @@ rm *.*~
 
 DIR=`pwd | cut -d "/" -f 7`
 OUT="/tmp/${DIR}.${1}.zip"
-git archive --format zip --output ${OUT} master
+git archive --prefix=${DIR}/ --format zip --output ${OUT} master
 
 echo "Your plugin archive has been generated as"
 echo "${OUT}"
