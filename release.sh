@@ -30,7 +30,8 @@ rm *.*~
 echo "You need to commit the version number change before we can package"
 git commit -m "Updated version number to ${VERSION}" -a
 
-DIR=`pwd | cut -d "/" -f 7`
+#see http://stackoverflow.com/questions/1371261/get-current-working-directory-name-in-bash-script
+DIR=${PWD##*/}
 OUT="/tmp/${DIR}.${1}.zip"
 git archive --prefix=${DIR}/ --format zip --output ${OUT} master
 
